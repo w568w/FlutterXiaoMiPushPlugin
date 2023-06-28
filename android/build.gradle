@@ -44,5 +44,5 @@ dependencies {
     // fastjson
     implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.68'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation files('libs/MiPush_SDK_Client_5_7_8-C_3rd.aar')
+    api project(":mipushsdk")
 }
