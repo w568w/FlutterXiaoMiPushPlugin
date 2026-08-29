@@ -14,17 +14,17 @@ class MiPushCommandMessageEntity {
   factory MiPushCommandMessageEntity.fromJson(Map<String, dynamic> json) {
     return MiPushCommandMessageEntity(
       command: json['command'],
-      commandArguments: json['commandArguments'] != null
-          ? json['commandArguments'].cast<String>()
-          : null,
+      commandArguments: (json['commandArguments'] as List<dynamic>?)
+          ?.cast<String>(),
       resultCode: json['resultCode'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'command': command,
-        'commandArguments':
-            commandArguments != null ? jsonEncode(commandArguments) : null,
-        'resultCode': resultCode,
-      };
+    'command': command,
+    'commandArguments': commandArguments != null
+        ? jsonEncode(commandArguments)
+        : null,
+    'resultCode': resultCode,
+  };
 }

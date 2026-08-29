@@ -4,8 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:xiao_mi_push_plugin/xiao_mi_push_plugin_listener.dart';
 
 class XiaoMiPushPlugin {
-  static const MethodChannel _channel =
-      const MethodChannel('xiao_mi_push_plugin');
+  static const MethodChannel _channel = MethodChannel('xiao_mi_push_plugin');
   static XiaoMiPushPluginListener? listener;
 
   /// 初始化，如果没有appId或appKey，请登录小米开发者中心申请
@@ -116,22 +115,23 @@ class XiaoMiPushPlugin {
 
   /// 添加消息监听
   static void addListener(ListenerValue func) {
-    if (listener == null) {
-      listener = XiaoMiPushPluginListener(_channel);
-    }
+    listener ??= XiaoMiPushPluginListener(_channel);
     listener!.addListener(func);
   }
 
   /// 移除消息监听
   static void removeListener(ListenerValue func) {
-    if (listener == null) {
-      listener = XiaoMiPushPluginListener(_channel);
-    }
+    listener ??= XiaoMiPushPluginListener(_channel);
     listener!.removeListener(func);
   }
 
   /// 获取客户端的 RegId
   static Future<String?> getRegId() async {
     return await _channel.invokeMethod('getRegId');
+  }
+
+  /// 获取小米推送 SDK 版本
+  static Future<String?> getSdkVersion() async {
+    return await _channel.invokeMethod('getSdkVersion');
   }
 }

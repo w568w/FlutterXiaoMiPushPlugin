@@ -5,7 +5,7 @@
 [![pub package](https://img.shields.io/pub/v/xiao_mi_push_plugin.svg)](https://pub.dartlang.org/packages/xiao_mi_push_plugin)
 
 Xiaomi Push SDK Flutter plugin
-Xiaomi Push version: v3.7.6
+Xiaomi Push version: v7.12.4
 During testing, please use a real device as an emulator may trigger an exception with the message "code = 10017, msg= Illegal parameter value".
 
 ## Discussion Group
@@ -15,7 +15,7 @@ height="300em" style="max-width:100%;display: inline-block;"/>
 [Click to join the group chat](https://jq.qq.com/?_wv=1027&k=QxCWMlUf)  
 
 ## Requirements
-Flutter Version >= 1.12  
+Flutter version >= 3.3
 
 If you encounter an error with code `22022`, please make sure that push services are enabled. For instructions on how to enable push services, please refer to: [https://support.rongcloud.cn/ks/NzE5](https://support.rongcloud.cn/ks/NzE5)
 
@@ -24,12 +24,8 @@ If you encounter an error with code `22022`, please make sure that push services
 No additional configuration is required as obfuscation is already built in.
 
 ### Permissions
-Modify the `AndroidManifest.xml` file and add the following:
-````
-<permission android:name="your.package.name.permission.MIPUSH_RECEIVE"
-            android:protectionLevel="signature"/>
-<uses-permission android:name="your.package.name.permission.MIPUSH_RECEIVE"/>
-````
+The MiPush AAR declares its required permissions through manifest merging; no
+manual entries are needed.
 
 ## Usage
 ### API
@@ -46,6 +42,7 @@ Modify the `AndroidManifest.xml` file and add the following:
 | unsubscribe  | Cancel tag | { topic: topic, category: category }
 | getAllTopic  | Get all tags | -
 | getRegId  | Get client RegId | -
+| getSdkVersion  | Get the MiPush SDK version | -
 
 ### Listeners
 Add listener: `XiaoMiPushPlugin.addListener`, remove listener: `XiaoMiPushPlugin.removeListener`  
@@ -75,4 +72,3 @@ I also maintain the following plugins. If you are interested in maintaining them
 | Flutter | [FlutterTextSpanField](https://github.com/JiangJuHong/FlutterTextSpanField)               | Custom text style input box         | [![pub package](https://img.shields.io/pub/v/text_span_field.svg)](https://pub.dartlang.org/packages/text_span_field)               |
 | Flutter | [FlutterClipboardListener](https://github.com/JiangJuHong/FlutterClipboardListener)       | Clipboard listener               | [![pub package](https://img.shields.io/pub/v/clipboard_listener.svg)](https://pub.dartlang.org/packages/clipboard_listener)         |
 | Flutter | [FlutterQiniucloudLivePlugin](https://github.com/JiangJuHong/FlutterQiniucloudLivePlugin) | Flutter Qiniu Cloud Live plugin    | Not
-

@@ -44,18 +44,18 @@ class MiPushMessageEntity {
   }
 
   Map<String, dynamic> toJson() => {
-        'arrivedMessage': arrivedMessage,
-        'content': content,
-        'description': description,
-        'extra': extra == null ? null : extra!.toJson(),
-        'messageId': messageId,
-        'messageType': messageType,
-        'notified': notified,
-        'notifyId': notifyId,
-        'notifyType': notifyType,
-        'passThrough': passThrough,
-        'title': title,
-      };
+    'arrivedMessage': arrivedMessage,
+    'content': content,
+    'description': description,
+    'extra': extra?.toJson(),
+    'messageId': messageId,
+    'messageType': messageType,
+    'notified': notified,
+    'notifyId': notifyId,
+    'notifyType': notifyType,
+    'passThrough': passThrough,
+    'title': title,
+  };
 }
 
 class MiPushMessageExtra {
@@ -87,11 +87,11 @@ class MiPushMessageExtra {
   }
 
   Map<String, dynamic> toJson() => {
-        'high_priority_event': highPriorityEvent,
-        'fe_ts': feTs,
-        '__planId__': planId,
-        'source': source,
-        'notify_foreground': notifyForeground,
-        '__m_ts': mTs,
-      };
+    'high_priority_event': highPriorityEvent,
+    'fe_ts': feTs,
+    '__planId__': planId,
+    'source': source,
+    'notify_foreground': notifyForeground,
+    '__m_ts': mTs,
+  };
 }

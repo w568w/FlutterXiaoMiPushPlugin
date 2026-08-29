@@ -1,7 +1,7 @@
 package top.huic.xiao_mi_push_plugin
 
 import android.content.Context
-import com.alibaba.fastjson.JSON
+import com.google.gson.Gson
 import com.xiaomi.mipush.sdk.MiPushCommandMessage
 import com.xiaomi.mipush.sdk.MiPushMessage
 import com.xiaomi.mipush.sdk.PushMessageReceiver
@@ -13,6 +13,8 @@ import top.huic.xiao_mi_push_plugin.util.CommonUtil
  * 小米广播接收器
  */
 class XiaoMiMessageReceiver : PushMessageReceiver() {
+    private val gson = Gson()
+
     override fun onNotificationMessageClicked(context: Context?, message: MiPushMessage?) {
         super.onNotificationMessageClicked(context, message)
         this.invokeListener(XiaoMiListenerTypeEnum.NotificationMessageClicked, message)
@@ -50,7 +52,7 @@ class XiaoMiMessageReceiver : PushMessageReceiver() {
      * @param params 参数
      */
     private fun invokeListener(type: XiaoMiListenerTypeEnum, params: Any?) {
-        val p: String = if (params != null) JSON.toJSONString(params) else ""
+        val p = serializeParams(gson, params)
         CommonUtil.runMainThread {
             XiaoMiPushPlugin.channel.invokeMethod("onListener", mapOf(
                     "type" to type.name,
@@ -58,4 +60,36 @@ class XiaoMiMessageReceiver : PushMessageReceiver() {
             ))
         }
     }
+}
+
+internal fun serializeParams(gson: Gson, params: Any?): String {
+    val value = when (params) {
+        is MiPushMessage -> mapOf(
+            "arrivedMessage" to params.isArrivedMessage,
+            "messageId" to params.messageId,
+            "messageType" to params.messageType,
+            "content" to params.content,
+            "alias" to params.alias,
+            "topic" to params.topic,
+            "userAccount" to params.userAccount,
+            "passThrough" to params.passThrough,
+            "notifyType" to params.notifyType,
+            "notifyId" to params.notifyId,
+            "notified" to params.isNotified,
+            "description" to params.description,
+            "title" to params.title,
+            "category" to params.category,
+            "extra" to params.extra,
+        )
+        is MiPushCommandMessage -> mapOf(
+            "command" to params.command,
+            "commandArguments" to params.commandArguments,
+            "resultCode" to params.resultCode,
+            "reason" to params.reason,
+            "category" to params.category,
+            "autoMarkPkgs" to params.autoMarkPkgs,
+        )
+        else -> params
+    }
+    return if (value != null) gson.toJson(value) else ""
 }

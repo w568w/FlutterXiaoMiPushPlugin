@@ -1,20 +1,11 @@
 package top.huic.xiao_mi_push_plugin
 
-import android.Manifest
-import android.app.Activity
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import androidx.annotation.NonNull
-import androidx.core.app.ActivityCompat
-import com.alibaba.fastjson.JSON
+import com.xiaomi.push.BuildConfig as MiPushBuildConfig
 import com.xiaomi.mipush.sdk.MiPushClient
-import com.xiaomi.mipush.sdk.MiPushCommandMessage
-import com.xiaomi.mipush.sdk.MiPushMessage
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
-import io.flutter.embedding.engine.plugins.activity.ActivityAware
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -23,46 +14,20 @@ import top.huic.xiao_mi_push_plugin.util.CommonUtil
 import java.lang.reflect.Method
 
 /** XiaoMiPushPlugin */
-public class XiaoMiPushPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+public class XiaoMiPushPlugin : FlutterPlugin, MethodCallHandler {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private lateinit var context: Context
-    private lateinit var activity: Activity
-
     companion object {
         lateinit var channel: MethodChannel
     }
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPluginBinding) {
-        this.context = flutterPluginBinding.applicationContext;
+        this.context = flutterPluginBinding.applicationContext
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "xiao_mi_push_plugin")
         channel.setMethodCallHandler(this)
-    }
-
-    override fun onAttachedToActivity(activityPluginBinding: ActivityPluginBinding) {
-        this.activity = activityPluginBinding.activity;
-
-        // 动态申请电话和存储权限
-        // 引用小米官方SDK: `在非MIUI平台下，如果targetSdkVersion>=23，需要动态申请电话和存储权限，请在申请权限后再调用注册接口，否则会注册失败。`
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this.activity, Array(2) {
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    Manifest.permission.READ_PHONE_STATE
-                }, 1)
-            }
-        }
-    }
-
-    override fun onDetachedFromActivity() {
-    }
-
-    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    }
-
-    override fun onDetachedFromActivityForConfigChanges() {
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -98,7 +63,7 @@ public class XiaoMiPushPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
         val alias = CommonUtil.getParam<String>(call, result, "alias")
         val category = CommonUtil.getParam<String>(call, result, "category")
 
-        MiPushClient.setAlias(this.context, alias, category);
+        MiPushClient.setAlias(this.context, alias, category)
         result.success(null)
     }
 
@@ -110,7 +75,7 @@ public class XiaoMiPushPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
         val alias = CommonUtil.getParam<String>(call, result, "alias")
         val category = CommonUtil.getParam<String>(call, result, "category")
 
-        MiPushClient.unsetAlias(this.context, alias, category);
+        MiPushClient.unsetAlias(this.context, alias, category)
         result.success(null)
     }
 
@@ -188,5 +153,12 @@ public class XiaoMiPushPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
      */
     private fun getRegId(@NonNull call: MethodCall, @NonNull result: Result) {
         result.success(MiPushClient.getRegId(context))
+    }
+
+    /**
+     * 获取小米推送 SDK 版本
+     */
+    private fun getSdkVersion(@NonNull call: MethodCall, @NonNull result: Result) {
+        result.success(MiPushBuildConfig.VERSION_NAME)
     }
 }

@@ -8,7 +8,7 @@ import 'entity/mi_push_command_message_entity.dart';
 /// 监听器对象
 class XiaoMiPushPluginListener {
   /// 监听器列表
-  static Set<ListenerValue> listeners = Set();
+  static final Set<ListenerValue> listeners = <ListenerValue>{};
 
   XiaoMiPushPluginListener(MethodChannel channel) {
     // 绑定监听器
@@ -85,8 +85,8 @@ class XiaoMiPushPluginListener {
 }
 
 /// 监听器值模型
-typedef ListenerValue<P> = void Function(
-    XiaoMiPushListenerTypeEnum type, P? params);
+typedef ListenerValue<P> =
+    void Function(XiaoMiPushListenerTypeEnum type, P? params);
 
 /// 监听器类型枚举
 enum XiaoMiPushListenerTypeEnum {

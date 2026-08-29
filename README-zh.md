@@ -5,7 +5,7 @@
 [![pub package](https://img.shields.io/pub/v/xiao_mi_push_plugin.svg)](https://pub.dartlang.org/packages/xiao_mi_push_plugin)
 
 小米推送SDK Flutter插件  
-小米Push版本: v3.7.6  
+小米 Push 版本：v7.12.4
 测试时请使用真机测试，模拟器将会出现 `code = 10017, msg= 参数值非法` 异常
 
 ## 讨论群
@@ -15,7 +15,7 @@ height="300em" style="max-width:100%;display: inline-block;"/>
 [点击加入群聊](https://jq.qq.com/?_wv=1027&k=QxCWMlUf)  
 
 ## 使用要求
-Flutter Version >= 1.12  
+Flutter 版本 >= 3.3
 
 如果出现 `22022` 错误，请确保已启用推送服务，启用步骤参考: [https://support.rongcloud.cn/ks/NzE5](https://support.rongcloud.cn/ks/NzE5)
 
@@ -24,12 +24,7 @@ Flutter Version >= 1.12
 无需额外配置，已内部打入混淆
 
 ### 权限
-修改 `AndroidManifest.xml` 文件，增加
-````
-    <permission android:name="你的包名.permission.MIPUSH_RECEIVE"
-                android:protectionLevel="signature"/>
-    <uses-permission android:name="你的包名.permission.MIPUSH_RECEIVE"/>
-````
+MiPush AAR 会通过 manifest merge 自动声明所需权限，无需手动添加。
 
 ## 使用
 ### 接口
@@ -46,6 +41,7 @@ Flutter Version >= 1.12
 | unsubscribe  | 撤销设置标签 | { topic: 标签, category: 分类 }
 | getAllTopic  | 获得所有标签 | -
 | getRegId  | 获取客户端的 RegId | -
+| getSdkVersion  | 获取小米推送 SDK 版本 | -
 
 ### 监听器
 添加监听器:`XiaoMiPushPlugin.addListener`，移除监听器:`XiaoMiPushPlugin.removeListener`  
